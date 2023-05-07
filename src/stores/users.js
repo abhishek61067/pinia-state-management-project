@@ -10,7 +10,7 @@ export const useCounterStore = defineStore('counter', {
         getSortedUsers(){
             return state.users.sort((a,b)=> a.name.localeCompare(b.name))
                  // testing if getter is like computed
-            // alert("computed test")
+                 // alert("computed test")
         }        
         },
     //  actions are like methods
