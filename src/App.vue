@@ -1,70 +1,63 @@
+<template>
+	<main>
+<h1>Manager</h1>
+<!-- testing if getter is like computed -->
+<!-- <form @submit.prevent = "userStore.getSortedUsers"> -->
+<form @submit.prevent = "createUser">
+<input type="text" v-model="userInput.name" name="" id="">
+<input type="email" v-model="userInput.email" name="" id="">
+<input type="submit" value="Create User">
+</form>
+	</main>
+
+	<div class="sort-option">
+		<label for=""> Sort
+			<span>
+				<input type="checkbox" v-model="sort" name="" id="">
+			</span>
+		</label>
+	</div>
+
+	<div class="user-list" v-if="!sort">
+		<li v-for="user in userStore.users" :key="user.id">
+		{{ user }}
+	</li>
+	</div>
+	<div class="user-list" v-else>
+		<li v-for="user in userStore.get" :key="user.id">
+		{{ user }}
+	</li>
+	</div>
+</template>
+
 <script setup>
-import { useUserStore } from './stores/users'
-import { ref } from 'vue'
+import {ref} from "vue"
+import { useCounterStore } from './stores/users';
+const userStore = useCounterStore();
 
-const user_store = useUserStore()
-
-const user_input = ref({
-	name: '',
-	email: ''
+const userInput = ref({
+	name: "",
+	email:"",
 })
 
 const sort = ref(false)
-const createUser  = ()=>{
-    if(!user_input.value.name || !user_input.value.email){
-      return alert("please fill name and email")
-    }
-    // calling the function in user_store
-    user_store.create(user_input.value);
-    // reset 
-    user_input.value = {
-      name: "",
-      email:""
-    }
-  }
 
-// const CreateUser = () => {
-// 	if (!user_input.value.name || !user_input.value.email) {
-// 		return alert("Please enter a name and email")
-// 	}
-// 	user_store.create(user_input.value)
+const createUser = ()=>{
+	// conditons before creating user
+	if(!userInput.value.name || !userInput.value.email ) return alert("fill name and email");
 
-// 	user_input.value = {
-// 		name: '',
-// 		email: ''
-// 	}
-// }
+	
+	userStore.createUser(userInput.value)
+	// reset 
+	userInput.value = {
+name:"",
+email:""
+	}
+	
+}
+	
 </script>
 
-<template>
-	<main>
-		<h1>Team Manager</h1>
+<style lang="scss" scoped>
 
-		<form @submit.prevent="createUser">
-			<input 
-				type="text"
-				placeholder="e.g. Naruto Uzumaki"
-				v-model="user_input.name"  />
-			<input 
-				type="email" 
-				placeholder="e.g. hokage@ninja.com"
-				v-model="user_input.email" />
-			<input 
-				type="submit" 
-				value="Create user" />
-		</form>
-
-		<div class="users">
-			<div v-for="user in user_store.users" class="user" :key="user.key">
-				<div>ID: {{ user.id }}</div>
-				<h3>{{ user.name }}</h3>
-				<p>{{ user.email }}</p>
-			</div>
-		</div>
-
-		
-	</main>
-</template>
-
-<style>
 </style>
